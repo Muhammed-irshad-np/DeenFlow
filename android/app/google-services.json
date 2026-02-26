@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "232645023520",
+    "project_id": "deenflow-ac16f",
+    "storage_bucket": "deenflow-ac16f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:232645023520:android:49ac94a5a1eec5d8056945",
+        "android_client_info": {
+          "package_name": "com.example.deenflow"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC28baqyIjroJAf47hIJCOLD_2c2KRhxiU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
