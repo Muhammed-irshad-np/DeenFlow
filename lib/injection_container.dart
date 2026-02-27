@@ -19,6 +19,16 @@ import 'features/prayer/domain/usecases/track_prayer.dart';
 import 'features/prayer/domain/usecases/update_prayer_settings.dart';
 import 'features/prayer/presentation/providers/prayer_provider.dart';
 
+import 'features/quran/data/datasources/quran_local_data_source.dart';
+import 'features/quran/data/datasources/quran_local_prefs.dart';
+import 'features/quran/data/repositories/quran_repository_impl.dart';
+import 'features/quran/domain/repositories/quran_repository.dart';
+import 'features/quran/domain/usecases/get_ayahs_by_surah.dart';
+import 'features/quran/domain/usecases/get_surahs.dart';
+import 'features/quran/domain/usecases/get_last_read.dart';
+import 'features/quran/domain/usecases/save_last_read.dart';
+import 'features/quran/presentation/providers/quran_provider.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -75,6 +85,36 @@ Future<void> init() async {
   );
   sl.registerLazySingleton<TrackerLocalDataSource>(
     () => TrackerLocalDataSourceImpl(sl()),
+  );
+
+  //! Features - Quran
+  // Provider
+  sl.registerFactory(
+    () => QuranProvider(
+      getSurahsUseCase: sl(),
+      getAyahsBySurahUseCase: sl(),
+      getLastReadUseCase: sl(),
+      saveLastReadUseCase: sl(),
+    ),
+  );
+
+  // UseCases
+  sl.registerLazySingleton(() => GetSurahsUseCase(sl()));
+  sl.registerLazySingleton(() => GetAyahsBySurahUseCase(sl()));
+  sl.registerLazySingleton(() => GetLastReadUseCase(sl()));
+  sl.registerLazySingleton(() => SaveLastReadUseCase(sl()));
+
+  // Repository
+  sl.registerLazySingleton<QuranRepository>(
+    () => QuranRepositoryImpl(localDataSource: sl(), localPrefs: sl()),
+  );
+
+  // Data Sources
+  sl.registerLazySingleton<QuranLocalDataSource>(
+    () => QuranLocalDataSourceImpl(),
+  );
+  sl.registerLazySingleton<QuranLocalPrefs>(
+    () => QuranLocalPrefsImpl(sharedPreferences: sl()),
   );
 
   //! Core

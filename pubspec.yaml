@@ -48,6 +48,9 @@ dependencies:
   path: ^1.9.0
   equatable: ^2.0.8
   geocoding: ^4.0.0
+  quran: ^1.4.1
+  dartz: ^0.10.1
+  visibility_detector: ^0.4.0+2
 
 dev_dependencies:
   flutter_test:

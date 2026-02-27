@@ -1,69 +1,85 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import '../providers/quran_provider.dart';
 
-class QuranReadingScreen extends StatelessWidget {
+import 'package:visibility_detector/visibility_detector.dart';
+
+class QuranReadingScreen extends StatefulWidget {
+  final int surahNumber;
   final String surahName;
   final String surahArabicName;
+  final int? initialAyah; // newly added parameter
 
   const QuranReadingScreen({
     super.key,
+    required this.surahNumber,
     required this.surahName,
     required this.surahArabicName,
+    this.initialAyah,
   });
 
   @override
-  Widget build(BuildContext context) {
-    // Dummy verses
-    final verses = [
-      {
-        'number': 1,
-        'arabic': 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
-        'translation':
-            'In the name of Allah, the Entirely Merciful, the Especially Merciful.',
-      },
-      {
-        'number': 2,
-        'arabic': 'الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ',
-        'translation': '[All] praise is [due] to Allah, Lord of the worlds -',
-      },
-      {
-        'number': 3,
-        'arabic': 'الرَّحْمَٰنِ الرَّحِيمِ',
-        'translation': 'The Entirely Merciful, the Especially Merciful,',
-      },
-      {
-        'number': 4,
-        'arabic': 'مَالِكِ يَوْمِ الدِّينِ',
-        'translation': 'Sovereign of the Day of Recompense.',
-      },
-      {
-        'number': 5,
-        'arabic': 'إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ',
-        'translation': 'It is You we worship and You we ask for help.',
-      },
-      {
-        'number': 6,
-        'arabic': 'اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ',
-        'translation': 'Guide us to the straight path -',
-      },
-      {
-        'number': 7,
-        'arabic':
-            'صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ',
-        'translation':
-            'The path of those upon whom You have bestowed favor, not of those who have evoked [Your] anger or of those who are astray.',
-      },
-    ];
+  State<QuranReadingScreen> createState() => _QuranReadingScreenState();
+}
 
+class _QuranReadingScreenState extends State<QuranReadingScreen> {
+  int _lastVisibleAyah = 1;
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _lastVisibleAyah = widget.initialAyah ?? 1;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await context.read<QuranProvider>().loadAyahs(widget.surahNumber);
+
+      if (widget.initialAyah != null && widget.initialAyah! > 1) {
+        // Simple approximation for scrolling to ayah
+        // A more robust solution might use scrollable_positioned_list
+        Future.delayed(const Duration(milliseconds: 300), () {
+          if (_scrollController.hasClients) {
+            final approxHeightPerAyah = 150.h; // rough estimate
+            final offset = (widget.initialAyah! - 1) * approxHeightPerAyah;
+            _scrollController.animateTo(
+              offset,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+            );
+          }
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onAyahVisibilityChanged(int ayahNumber, double visibleFraction) {
+    if (visibleFraction > 0.5 && _lastVisibleAyah != ayahNumber) {
+      _lastVisibleAyah = ayahNumber;
+      context.read<QuranProvider>().saveLastRead(
+        widget.surahNumber,
+        ayahNumber,
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Column(
           children: [
             Text(
-              surahName,
+              widget.surahName,
               style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
-            Text(surahArabicName, style: TextStyle(fontSize: 14.sp)),
+            Text(widget.surahArabicName, style: TextStyle(fontSize: 14.sp)),
           ],
         ),
         centerTitle: true,
@@ -75,78 +91,111 @@ class QuranReadingScreen extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: ListView.separated(
-          padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 16.w),
-          itemCount: verses.length,
-          separatorBuilder: (context, index) => Divider(height: 32.h),
-          itemBuilder: (context, index) {
-            final v = verses[index];
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(8.w),
-                      decoration: BoxDecoration(
-                        color: Theme.of(
-                          context,
-                        ).primaryColor.withAlpha((255 * 0.1).toInt()),
-                        shape: BoxShape.circle,
-                      ),
-                      child: Text(
-                        v['number'].toString(),
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        v['arabic'] as String,
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          fontSize: 28.sp,
-                          fontFamily: 'Amiri',
-                          height: 1.8,
-                        ),
-                        textDirection: TextDirection.rtl,
-                      ),
-                    ),
-                  ],
+        child: Consumer<QuranProvider>(
+          builder: (context, provider, child) {
+            if (provider.isLoadingAyahs) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            if (provider.ayahsErrorMessage != null) {
+              return Center(
+                child: Text(
+                  'Error loading Ayahs: ${provider.ayahsErrorMessage}',
+                  style: const TextStyle(color: Colors.red),
                 ),
-                SizedBox(height: 16.h),
-                Text(
-                  v['translation'] as String,
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Colors.grey.shade700,
-                    height: 1.5,
+              );
+            }
+
+            if (provider.currentAyahs.isEmpty) {
+              return const Center(
+                child: Text('No verses found for this Surah.'),
+              );
+            }
+
+            final ayahs = provider.currentAyahs;
+
+            return ListView.separated(
+              controller: _scrollController,
+              padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 16.w),
+              itemCount: ayahs.length,
+              separatorBuilder: (context, index) => Divider(height: 32.h),
+              itemBuilder: (context, index) {
+                final v = ayahs[index];
+                return VisibilityDetector(
+                  key: Key('ayah_${widget.surahNumber}_${v.number}'),
+                  onVisibilityChanged: (info) {
+                    _onAyahVisibilityChanged(v.number, info.visibleFraction);
+                  },
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(8.w),
+                            decoration: BoxDecoration(
+                              color: Theme.of(
+                                context,
+                              ).primaryColor.withAlpha((255 * 0.1).toInt()),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Text(
+                              v.number.toString(),
+                              style: TextStyle(
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Text(
+                              v.textArabic,
+                              textAlign: TextAlign.right,
+                              style: TextStyle(
+                                fontSize: 28.sp,
+                                fontFamily:
+                                    'Amiri', // Adjust font family if needed
+                                height: 1.8,
+                              ),
+                              textDirection: TextDirection.rtl,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 16.h),
+                      Text(
+                        v.textEnglish,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Colors.grey.shade700,
+                          height: 1.5,
+                        ),
+                      ),
+                      SizedBox(height: 8.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.play_circle_outline),
+                            color: Theme.of(context).primaryColor,
+                            onPressed: () {},
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.share_outlined),
+                            color: Colors.grey.shade600,
+                            onPressed: () {},
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.bookmark_outline),
+                            color: Colors.grey.shade600,
+                            onPressed: () {},
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ),
-                SizedBox(height: 8.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.play_circle_outline),
-                      color: Theme.of(context).primaryColor,
-                      onPressed: () {},
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.share_outlined),
-                      color: Colors.grey.shade600,
-                      onPressed: () {},
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.bookmark_outline),
-                      color: Colors.grey.shade600,
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
-              ],
+                );
+              },
             );
           },
         ),

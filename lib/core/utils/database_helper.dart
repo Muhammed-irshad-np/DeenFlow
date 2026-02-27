@@ -17,7 +17,12 @@ class DatabaseHelper {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    return await openDatabase(path, version: 1, onCreate: _createDB);
+    return await openDatabase(
+      path,
+      version: 2,
+      onCreate: _createDB,
+      onUpgrade: _onUpgrade,
+    );
   }
 
   Future _createDB(Database db, int version) async {
@@ -26,11 +31,19 @@ class DatabaseHelper {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         time TEXT NOT NULL,
+        endTime TEXT,
         isPrayed INTEGER NOT NULL,
         date TEXT NOT NULL,
         UNIQUE(name, date)
       )
     ''');
+  }
+
+  Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      // Add the endTime column to the prayer_records table
+      await db.execute('ALTER TABLE prayer_records ADD COLUMN endTime TEXT;');
+    }
   }
 
   Future close() async {

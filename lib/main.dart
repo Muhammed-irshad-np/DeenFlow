@@ -14,6 +14,7 @@ import 'features/onboarding/presentation/pages/onboarding_screen.dart';
 import 'injection_container.dart' as di;
 import 'package:provider/provider.dart';
 import 'features/prayer/presentation/providers/prayer_provider.dart';
+import 'features/quran/presentation/providers/quran_provider.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -31,6 +32,9 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => di.sl<PrayerProvider>()),
+        ChangeNotifierProvider(
+          create: (_) => di.sl<QuranProvider>()..loadSurahs(),
+        ),
       ],
       child: DeenFlowApp(initialRoute: isOnboarded ? '/home' : '/onboarding'),
     ),
@@ -53,6 +57,7 @@ GoRouter _createRouter(String initialLocation) => GoRouter(
       builder: (context, state) {
         final extra = state.extra as Map<String, dynamic>? ?? {};
         return QuranReadingScreen(
+          surahNumber: extra['number'] as int? ?? 1,
           surahName: extra['nameEnglish'] as String? ?? 'Al-Fatihah',
           surahArabicName: extra['nameArabic'] as String? ?? 'الفاتحة',
         );

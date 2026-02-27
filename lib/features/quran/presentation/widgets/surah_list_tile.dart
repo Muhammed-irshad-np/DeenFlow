@@ -24,7 +24,11 @@ class SurahListTile extends StatelessWidget {
       onTap: () {
         context.push(
           '/quran/read',
-          extra: {'nameEnglish': nameEnglish, 'nameArabic': nameArabic},
+          extra: {
+            'number': number,
+            'nameEnglish': nameEnglish,
+            'nameArabic': nameArabic,
+          },
         );
       },
       child: Padding(
