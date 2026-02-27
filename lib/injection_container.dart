@@ -27,6 +27,8 @@ import 'features/quran/domain/usecases/get_ayahs_by_surah.dart';
 import 'features/quran/domain/usecases/get_surahs.dart';
 import 'features/quran/domain/usecases/get_last_read.dart';
 import 'features/quran/domain/usecases/save_last_read.dart';
+import 'features/quran/domain/usecases/get_bookmarks.dart';
+import 'features/quran/domain/usecases/toggle_bookmark.dart';
 import 'features/quran/presentation/providers/quran_provider.dart';
 
 final sl = GetIt.instance;
@@ -95,6 +97,8 @@ Future<void> init() async {
       getAyahsBySurahUseCase: sl(),
       getLastReadUseCase: sl(),
       saveLastReadUseCase: sl(),
+      getBookmarksUseCase: sl(),
+      toggleBookmarkUseCase: sl(),
     ),
   );
 
@@ -103,6 +107,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetAyahsBySurahUseCase(sl()));
   sl.registerLazySingleton(() => GetLastReadUseCase(sl()));
   sl.registerLazySingleton(() => SaveLastReadUseCase(sl()));
+  sl.registerLazySingleton(() => GetBookmarksUseCase(sl()));
+  sl.registerLazySingleton(() => ToggleBookmarkUseCase(sl()));
 
   // Repository
   sl.registerLazySingleton<QuranRepository>(

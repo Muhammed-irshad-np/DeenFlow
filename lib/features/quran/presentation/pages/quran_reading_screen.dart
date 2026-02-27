@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import '../providers/quran_provider.dart';
 
 import 'package:visibility_detector/visibility_detector.dart';
@@ -26,14 +27,16 @@ class QuranReadingScreen extends StatefulWidget {
 class _QuranReadingScreenState extends State<QuranReadingScreen> {
   int _lastVisibleAyah = 1;
   final ScrollController _scrollController = ScrollController();
+  late QuranProvider _quranProvider;
 
   @override
   void initState() {
     super.initState();
     _lastVisibleAyah = widget.initialAyah ?? 1;
+    _quranProvider = context.read<QuranProvider>();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await context.read<QuranProvider>().loadAyahs(widget.surahNumber);
+      await _quranProvider.loadAyahs(widget.surahNumber);
 
       if (widget.initialAyah != null && widget.initialAyah! > 1) {
         // Simple approximation for scrolling to ayah
@@ -56,6 +59,7 @@ class _QuranReadingScreenState extends State<QuranReadingScreen> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _quranProvider.stopAudio();
     super.dispose();
   }
 
@@ -176,19 +180,60 @@ class _QuranReadingScreenState extends State<QuranReadingScreen> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.play_circle_outline),
+                            icon: Icon(
+                              provider.currentlyPlayingAyah ==
+                                          '${widget.surahNumber}_${v.number}' &&
+                                      provider.isAudioPlaying
+                                  ? Icons.pause_circle_outline
+                                  : Icons.play_circle_outline,
+                            ),
                             color: Theme.of(context).primaryColor,
-                            onPressed: () {},
+                            onPressed: () {
+                              final isCurrentlyPlaying =
+                                  provider.currentlyPlayingAyah ==
+                                      '${widget.surahNumber}_${v.number}' &&
+                                  provider.isAudioPlaying;
+                              if (isCurrentlyPlaying) {
+                                provider.stopAudio();
+                              } else {
+                                provider.playAudio(
+                                  widget.surahNumber,
+                                  v.number,
+                                );
+                              }
+                            },
                           ),
                           IconButton(
                             icon: const Icon(Icons.share_outlined),
                             color: Colors.grey.shade600,
-                            onPressed: () {},
+                            onPressed: () {
+                              final textToShare =
+                                  '${v.textArabic}\n\n${v.textEnglish}\n\n- Quran [${widget.surahNumber}:${v.number}]';
+                              Share.share(textToShare);
+                            },
                           ),
                           IconButton(
-                            icon: const Icon(Icons.bookmark_outline),
-                            color: Colors.grey.shade600,
-                            onPressed: () {},
+                            icon: Icon(
+                              provider.isBookmarked(
+                                    widget.surahNumber,
+                                    v.number,
+                                  )
+                                  ? Icons.bookmark
+                                  : Icons.bookmark_outline,
+                            ),
+                            color:
+                                provider.isBookmarked(
+                                  widget.surahNumber,
+                                  v.number,
+                                )
+                                ? Theme.of(context).primaryColor
+                                : Colors.grey.shade600,
+                            onPressed: () {
+                              provider.toggleBookmark(
+                                widget.surahNumber,
+                                v.number,
+                              );
+                            },
                           ),
                         ],
                       ),

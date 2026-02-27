@@ -9,4 +9,7 @@ abstract class QuranRepository {
   Future<Either<Failure, List<Ayah>>> getAyahsBySurah(int surahNumber);
   Future<Either<Failure, void>> saveLastRead(int surahNumber, int ayahNumber);
   Future<Either<Failure, Map<String, int>?>> getLastRead();
+  Future<Either<Failure, List<String>>> getBookmarks();
+  Future<Either<Failure, void>> addBookmark(int surahNumber, int ayahNumber);
+  Future<Either<Failure, void>> removeBookmark(int surahNumber, int ayahNumber);
 }

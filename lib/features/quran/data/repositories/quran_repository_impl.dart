@@ -57,4 +57,40 @@ class QuranRepositoryImpl implements QuranRepository {
       return const Left(CacheFailure('Failed to load last read position'));
     }
   }
+
+  @override
+  Future<Either<Failure, List<String>>> getBookmarks() async {
+    try {
+      final result = await localPrefs.getBookmarks();
+      return Right(result);
+    } catch (e) {
+      return const Left(CacheFailure('Failed to load bookmarks'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> addBookmark(
+    int surahNumber,
+    int ayahNumber,
+  ) async {
+    try {
+      await localPrefs.addBookmark(surahNumber, ayahNumber);
+      return const Right(null);
+    } catch (e) {
+      return const Left(CacheFailure('Failed to add bookmark'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> removeBookmark(
+    int surahNumber,
+    int ayahNumber,
+  ) async {
+    try {
+      await localPrefs.removeBookmark(surahNumber, ayahNumber);
+      return const Right(null);
+    } catch (e) {
+      return const Left(CacheFailure('Failed to remove bookmark'));
+    }
+  }
 }
