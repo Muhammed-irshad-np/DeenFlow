@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../injection_container.dart';
 import '../providers/onboarding_provider.dart';
 
@@ -54,7 +55,7 @@ class _OnboardingView extends StatelessWidget {
     OnboardingProvider provider,
   ) {
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: EdgeInsets.all(24.w),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -64,20 +65,20 @@ class _OnboardingView extends StatelessWidget {
               child: const Text('Back'),
             )
           else
-            const SizedBox(width: 64), // Placeholder for alignment
+            SizedBox(width: 64.w), // Placeholder for alignment
 
           Row(
             children: List.generate(
               5,
               (index) => Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4),
-                width: provider.currentPage == index ? 24 : 8,
-                height: 8,
+                margin: EdgeInsets.symmetric(horizontal: 4.w),
+                width: provider.currentPage == index ? 24.w : 8.w,
+                height: 8.h,
                 decoration: BoxDecoration(
                   color: provider.currentPage == index
                       ? Theme.of(context).primaryColor
                       : Colors.grey.shade400,
-                  borderRadius: BorderRadius.circular(4),
+                  borderRadius: BorderRadius.circular(4.r),
                 ),
               ),
             ),
@@ -95,9 +96,9 @@ class _OnboardingView extends StatelessWidget {
               backgroundColor: Theme.of(context).primaryColor,
               foregroundColor: Theme.of(context).colorScheme.onPrimary,
               elevation: 0,
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 12.h),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(8.r),
               ),
             ),
             child: Text(provider.currentPage == 4 ? 'Get Started' : 'Next'),
@@ -117,24 +118,24 @@ class _WelcomeStep extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.read<OnboardingProvider>();
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: EdgeInsets.all(24.w),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
             Icons.mosque_outlined,
-            size: 80,
+            size: 80.r,
             color: Theme.of(context).primaryColor,
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: 32.h),
           Text(
             'Peace be upon you',
             style: Theme.of(
               context,
-            ).textTheme.displayLarge?.copyWith(fontSize: 28),
+            ).textTheme.displayLarge?.copyWith(fontSize: 28.sp),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Text(
             'Welcome to DeenFlow. A calm spiritual companion for your daily journey.',
             style: Theme.of(
@@ -142,7 +143,7 @@ class _WelcomeStep extends StatelessWidget {
             ).textTheme.bodyLarge?.copyWith(color: Colors.grey.shade600),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 48),
+          SizedBox(height: 48.h),
           DropdownButtonFormField<String>(
             decoration: const InputDecoration(
               labelText: 'Select Language',
@@ -166,19 +167,19 @@ class _LocationStep extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: EdgeInsets.all(24.w),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.location_on_outlined, size: 64, color: Colors.grey),
-          const SizedBox(height: 32),
+          Icon(Icons.location_on_outlined, size: 64.r, color: Colors.grey),
+          SizedBox(height: 32.h),
           Text(
             'Location Permission',
             style: Theme.of(
               context,
-            ).textTheme.displayLarge?.copyWith(fontSize: 24),
+            ).textTheme.displayLarge?.copyWith(fontSize: 24.sp),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Text(
             'We use your location solely to calculate accurate prayer times for your area. We do not track you.',
             style: Theme.of(
@@ -186,7 +187,7 @@ class _LocationStep extends StatelessWidget {
             ).textTheme.bodyLarge?.copyWith(color: Colors.grey.shade600),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: 32.h),
           OutlinedButton.icon(
             onPressed: () {
               // Trigger permission logic here
@@ -194,10 +195,10 @@ class _LocationStep extends StatelessWidget {
             icon: const Icon(Icons.my_location),
             label: const Text('Allow Location'),
             style: OutlinedButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           TextButton(
             onPressed: () {
               // Manual selection
@@ -217,7 +218,7 @@ class _CalculationMethodStep extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.watch<OnboardingProvider>();
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: EdgeInsets.all(24.w),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -226,10 +227,10 @@ class _CalculationMethodStep extends StatelessWidget {
             'Prayer Calculation Method',
             style: Theme.of(
               context,
-            ).textTheme.displayLarge?.copyWith(fontSize: 24),
+            ).textTheme.displayLarge?.copyWith(fontSize: 24.sp),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: 32.h),
           _MethodCard(
             title: 'Shafi, Maliki, Hanbali',
             description: 'Standard Asr calculation',
@@ -238,7 +239,7 @@ class _CalculationMethodStep extends StatelessWidget {
                 .read<OnboardingProvider>()
                 .updateCalculationMethod('Shafi'),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           _MethodCard(
             title: 'Hanafi',
             description: 'Later Asr calculation',
@@ -273,12 +274,12 @@ class _MethodCard extends StatelessWidget {
         : Colors.grey.shade300;
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(12.r),
       child: Container(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.all(20.w),
         decoration: BoxDecoration(
           border: Border.all(color: color, width: isSelected ? 2 : 1),
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
           color: isSelected
               ? Theme.of(context).primaryColor.withAlpha(
                   (255 * 0.05).toInt(),
@@ -294,7 +295,7 @@ class _MethodCard extends StatelessWidget {
                 context,
               ).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w600),
             ),
-            const SizedBox(height: 4),
+            SizedBox(height: 4.h),
             Text(
               description,
               style: Theme.of(
@@ -315,7 +316,7 @@ class _GoalsStep extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.watch<OnboardingProvider>();
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: EdgeInsets.all(24.w),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -323,14 +324,14 @@ class _GoalsStep extends StatelessWidget {
             'Set Daily Goals',
             style: Theme.of(
               context,
-            ).textTheme.displayLarge?.copyWith(fontSize: 24),
+            ).textTheme.displayLarge?.copyWith(fontSize: 24.sp),
           ),
-          const SizedBox(height: 48),
+          SizedBox(height: 48.h),
           Text(
             'Daily Quran Goal',
             style: Theme.of(context).textTheme.bodyLarge,
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -348,7 +349,7 @@ class _GoalsStep extends StatelessWidget {
                 '${provider.quranGoalPages} Pages',
                 style: Theme.of(
                   context,
-                ).textTheme.displayLarge?.copyWith(fontSize: 20),
+                ).textTheme.displayLarge?.copyWith(fontSize: 20.sp),
               ),
               IconButton(
                 icon: const Icon(Icons.add_circle_outline),
@@ -360,7 +361,7 @@ class _GoalsStep extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 48),
+          SizedBox(height: 48.h),
           SwitchListTile(
             title: const Text('Enable Dhikr Reminders'),
             subtitle: const Text(
@@ -384,23 +385,23 @@ class _NotificationStep extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = context.watch<OnboardingProvider>();
     return Padding(
-      padding: const EdgeInsets.all(24.0),
+      padding: EdgeInsets.all(24.w),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(
+          Icon(
             Icons.notifications_active_outlined,
-            size: 64,
+            size: 64.r,
             color: Colors.grey,
           ),
-          const SizedBox(height: 32),
+          SizedBox(height: 32.h),
           Text(
             'Stay Connected',
             style: Theme.of(
               context,
-            ).textTheme.displayLarge?.copyWith(fontSize: 24),
+            ).textTheme.displayLarge?.copyWith(fontSize: 24.sp),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.h),
           Text(
             'We will gently notify you when it is time to pray, never with a sense of urgency or guilt.',
             style: Theme.of(
@@ -408,7 +409,7 @@ class _NotificationStep extends StatelessWidget {
             ).textTheme.bodyLarge?.copyWith(color: Colors.grey.shade600),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 48),
+          SizedBox(height: 48.h),
           SwitchListTile(
             title: const Text('Prayer Alerts'),
             subtitle: const Text('Receive notifications for Adhan / Iqamah'),

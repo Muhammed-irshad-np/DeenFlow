@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -9,12 +10,12 @@ class ProfileScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Profile & Settings')),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(vertical: 24.0),
+          padding: EdgeInsets.symmetric(vertical: 24.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildProfileHeader(context),
-              const SizedBox(height: 32),
+              SizedBox(height: 32.h),
               _buildSettingsGroup(context, 'Worship Settings', [
                 _SettingsTile(
                   icon: Icons.mosque_outlined,
@@ -32,7 +33,7 @@ class ProfileScreen extends StatelessWidget {
                   onTap: () {},
                 ),
               ]),
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
               _buildSettingsGroup(context, 'App Settings', [
                 _SettingsTile(
                   icon: Icons.dark_mode_outlined,
@@ -52,7 +53,7 @@ class ProfileScreen extends StatelessWidget {
                   onTap: () {},
                 ),
               ]),
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
               _buildSettingsGroup(context, 'Support & Info', [
                 _SettingsTile(
                   icon: Icons.help_outline,
@@ -79,21 +80,21 @@ class ProfileScreen extends StatelessWidget {
 
   Widget _buildProfileHeader(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+      padding: EdgeInsets.symmetric(horizontal: 24.w),
       child: Row(
         children: [
           CircleAvatar(
-            radius: 40,
+            radius: 40.r,
             backgroundColor: Theme.of(
               context,
             ).primaryColor.withAlpha((255 * 0.1).toInt()),
             child: Icon(
               Icons.person,
-              size: 40,
+              size: 40.r,
               color: Theme.of(context).primaryColor,
             ),
           ),
-          const SizedBox(width: 20),
+          SizedBox(width: 20.w),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -103,7 +104,7 @@ class ProfileScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4.h),
               Text(
                 'Assalamu Alaikum',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -127,7 +128,7 @@ class ProfileScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          padding: EdgeInsets.symmetric(horizontal: 24.w),
           child: Text(
             title,
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -137,7 +138,7 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         Container(
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
@@ -176,8 +177,12 @@ class _SettingsTile extends StatelessWidget {
         children: [
           if (value != null)
             Text(value!, style: TextStyle(color: Colors.grey.shade600)),
-          if (value != null) const SizedBox(width: 8),
-          Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey.shade400),
+          if (value != null) SizedBox(width: 8.w),
+          Icon(
+            Icons.arrow_forward_ios,
+            size: 16.r,
+            color: Colors.grey.shade400,
+          ),
         ],
       ),
       onTap: onTap,

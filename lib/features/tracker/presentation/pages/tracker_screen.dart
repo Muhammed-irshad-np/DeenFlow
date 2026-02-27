@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../../core/themes/app_theme.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TrackerScreen extends StatelessWidget {
   const TrackerScreen({super.key});
@@ -10,14 +11,14 @@ class TrackerScreen extends StatelessWidget {
       appBar: AppBar(title: const Text('Daily Tracker')),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
+          padding: EdgeInsets.all(24.w),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildProgressRings(context),
-              const SizedBox(height: 32),
+              SizedBox(height: 32.h),
               _buildDhikrSection(context),
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
               _buildHabitsSection(context),
             ],
           ),
@@ -28,15 +29,15 @@ class TrackerScreen extends StatelessWidget {
 
   Widget _buildProgressRings(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: EdgeInsets.all(24.w),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withAlpha((255 * 0.05).toInt()),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+            blurRadius: 10.r,
+            offset: Offset(0, 4.h),
           ),
         ],
       ),
@@ -60,21 +61,21 @@ class TrackerScreen extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          width: 72,
-          height: 72,
+          width: 72.w,
+          height: 72.w,
           child: Stack(
             fit: StackFit.expand,
             children: [
               CircularProgressIndicator(
                 value: 1.0,
-                strokeWidth: 6,
+                strokeWidth: 6.w,
                 valueColor: AlwaysStoppedAnimation(
                   color.withAlpha((255 * 0.2).toInt()),
                 ),
               ),
               CircularProgressIndicator(
                 value: progress,
-                strokeWidth: 6,
+                strokeWidth: 6.w,
                 valueColor: AlwaysStoppedAnimation(color),
                 strokeCap: StrokeCap.round,
               ),
@@ -89,7 +90,7 @@ class TrackerScreen extends StatelessWidget {
             ],
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12.h),
         Text(
           label,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -114,10 +115,10 @@ class TrackerScreen extends StatelessWidget {
         const SizedBox(height: 16),
         Container(
           width: double.infinity,
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24.w),
           decoration: BoxDecoration(
             color: Theme.of(context).primaryColor,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(16.r),
           ),
           child: Column(
             children: [
@@ -127,25 +128,25 @@ class TrackerScreen extends StatelessWidget {
                   context,
                 ).textTheme.headlineSmall?.copyWith(color: Colors.white),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
               Text(
                 '33',
                 style: Theme.of(context).textTheme.displayLarge?.copyWith(
                   color: AppTheme.goldAccent,
                   fontWeight: FontWeight.bold,
-                  fontSize: 64,
+                  fontSize: 64.sp,
                 ),
               ),
-              const SizedBox(height: 24),
+              SizedBox(height: 24.h),
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
                   shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(24),
+                  padding: EdgeInsets.all(24.w),
                   backgroundColor: AppTheme.goldAccent,
                   foregroundColor: Theme.of(context).primaryColor,
                 ),
-                child: const Icon(Icons.add, size: 32),
+                child: Icon(Icons.add, size: 32.r),
               ),
             ],
           ),
@@ -164,20 +165,20 @@ class TrackerScreen extends StatelessWidget {
             context,
           ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
         ),
-        const SizedBox(height: 16),
-        _HabitTile(
+        SizedBox(height: 16.h),
+        const _HabitTile(
           title: 'Fasting (Sunnah)',
           icon: Icons.wb_twilight,
           isCompleted: false,
         ),
-        const SizedBox(height: 12),
-        _HabitTile(
+        SizedBox(height: 12.h),
+        const _HabitTile(
           title: 'Charity / Sadaqah',
           icon: Icons.favorite_border,
           isCompleted: true,
         ),
-        const SizedBox(height: 12),
-        _HabitTile(
+        SizedBox(height: 12.h),
+        const _HabitTile(
           title: 'Read Surah Al-Mulk',
           icon: Icons.menu_book,
           isCompleted: false,
@@ -210,7 +211,7 @@ class _HabitTile extends StatelessWidget {
               ? Theme.of(context).primaryColor.withAlpha((255 * 0.3).toInt())
               : Colors.grey.shade200,
         ),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: ListTile(
         leading: Icon(

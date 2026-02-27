@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class QuranProgressSection extends StatelessWidget {
   const QuranProgressSection({super.key});
@@ -6,10 +7,10 @@ class QuranProgressSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(16.w),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(color: Colors.grey.shade200),
       ),
       child: Column(
@@ -32,14 +33,14 @@ class QuranProgressSection extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
           ClipRRect(
-            borderRadius: BorderRadius.circular(4),
+            borderRadius: BorderRadius.circular(4.r),
             child: LinearProgressIndicator(
               value: 0.4,
               backgroundColor: Colors.grey.shade200,
               color: Theme.of(context).primaryColor,
-              minHeight: 8,
+              minHeight: 8.h,
             ),
           ),
         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DailyReflectionSection extends StatelessWidget {
   const DailyReflectionSection({super.key});
@@ -6,10 +7,10 @@ class DailyReflectionSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor.withAlpha((255 * 0.05).toInt()),
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -20,7 +21,7 @@ class DailyReflectionSection extends StatelessWidget {
                 Icons.format_quote_rounded,
                 color: Theme.of(context).primaryColor,
               ),
-              const SizedBox(width: 8),
+              SizedBox(width: 8.w),
               Text(
                 'Daily Reflection',
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -30,14 +31,14 @@ class DailyReflectionSection extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.h),
           Text(
             '"So remember Me; I will remember you."',
             style: Theme.of(
               context,
             ).textTheme.bodyLarge?.copyWith(fontStyle: FontStyle.italic),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.h),
           Text(
             '- Surah Al-Baqarah (2:152)',
             style: Theme.of(

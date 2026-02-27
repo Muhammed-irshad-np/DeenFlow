@@ -12,9 +12,12 @@ import 'core/usecases/usecase.dart';
 import 'features/onboarding/domain/usecases/onboarding_usecases.dart';
 import 'features/onboarding/presentation/pages/onboarding_screen.dart';
 import 'injection_container.dart' as di;
+import 'package:provider/provider.dart';
+import 'features/prayer/presentation/providers/prayer_provider.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +27,14 @@ void main() async {
   final checkOnboarding = di.sl<CheckOnboardingStatusUseCase>();
   final isOnboarded = await checkOnboarding(const NoParams());
 
-  runApp(DeenFlowApp(initialRoute: isOnboarded ? '/home' : '/onboarding'));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => di.sl<PrayerProvider>()),
+      ],
+      child: DeenFlowApp(initialRoute: isOnboarded ? '/home' : '/onboarding'),
+    ),
+  );
 }
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -82,14 +92,20 @@ class DeenFlowApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'DeenFlow',
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode
-          .system, // Defaults to dark mode per UX rules, assuming system is dark or we can enforce to ThemeMode.dark
-      routerConfig: _createRouter(initialRoute),
-      debugShowCheckedModeBanner: false,
+    return ScreenUtilInit(
+      designSize: const Size(393, 852), // typical mobile device design size
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (_, child) {
+        return MaterialApp.router(
+          title: 'DeenFlow',
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: ThemeMode.system, // Defaults to dark mode per UX rules
+          routerConfig: _createRouter(initialRoute),
+          debugShowCheckedModeBanner: false,
+        );
+      },
     );
   }
 }

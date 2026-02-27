@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class PrayerTimeCard extends StatelessWidget {
   final String name;
@@ -6,6 +7,7 @@ class PrayerTimeCard extends StatelessWidget {
   final bool isPrayed;
   final bool isNext;
   final bool isPast;
+  final VoidCallback? onTap;
 
   const PrayerTimeCard({
     super.key,
@@ -14,6 +16,7 @@ class PrayerTimeCard extends StatelessWidget {
     this.isPrayed = false,
     this.isNext = false,
     this.isPast = false,
+    this.onTap,
   });
 
   @override
@@ -30,54 +33,64 @@ class PrayerTimeCard extends StatelessWidget {
     }
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: EdgeInsets.only(bottom: 12.h),
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
         border: Border.all(color: borderColor, width: 2),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withAlpha((255 * 0.05).toInt()),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+            blurRadius: 8.r,
+            offset: Offset(0, 2.h),
           ),
         ],
       ),
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-        leading: Icon(
-          _getIconForPrayer(name),
-          color: isNext ? theme.primaryColor : Colors.grey.shade500,
-          size: 28,
-        ),
-        title: Text(
-          name,
-          style: theme.textTheme.titleMedium?.copyWith(
-            fontWeight: isNext ? FontWeight.bold : FontWeight.w600,
-          ),
-        ),
-        subtitle: isMissed
-            ? Text(
-                'You can still make it up 🤍',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: Colors.grey.shade600,
-                  fontStyle: FontStyle.italic,
-                ),
-              )
-            : null,
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              time,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12.r),
+          onTap: onTap,
+          child: ListTile(
+            contentPadding: EdgeInsets.symmetric(
+              horizontal: 20.w,
+              vertical: 8.h,
+            ),
+            leading: Icon(
+              _getIconForPrayer(name),
+              color: isNext ? theme.primaryColor : Colors.grey.shade500,
+              size: 28.r,
+            ),
+            title: Text(
+              name,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: isNext ? FontWeight.bold : FontWeight.w600,
-                color: isNext ? theme.primaryColor : null,
               ),
             ),
-            const SizedBox(width: 16),
-            _buildStatusIndicator(theme),
-          ],
+            subtitle: isMissed
+                ? Text(
+                    'You can still make it up 🤍',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: Colors.grey.shade600,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  )
+                : null,
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  time,
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: isNext ? FontWeight.bold : FontWeight.w600,
+                    color: isNext ? theme.primaryColor : null,
+                  ),
+                ),
+                SizedBox(width: 16.w),
+                _buildStatusIndicator(theme),
+              ],
+            ),
+          ),
         ),
       ),
     );

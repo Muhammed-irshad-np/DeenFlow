@@ -1,5 +1,6 @@
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppTheme {
   // Primary Colors
@@ -38,16 +39,16 @@ class AppTheme {
           color: textPrimaryLight,
           fontWeight: FontWeight.bold,
         ),
-        bodyLarge: GoogleFonts.inter(color: textPrimaryLight, fontSize: 16),
-        bodyMedium: GoogleFonts.inter(color: textPrimaryLight, fontSize: 14),
+        bodyLarge: GoogleFonts.inter(color: textPrimaryLight, fontSize: 16.sp),
+        bodyMedium: GoogleFonts.inter(color: textPrimaryLight, fontSize: 14.sp),
       ),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: warmOffWhite,
         elevation: 0,
-        iconTheme: IconThemeData(color: deepEmerald),
+        iconTheme: const IconThemeData(color: deepEmerald),
         titleTextStyle: TextStyle(
           color: deepEmerald,
-          fontSize: 20,
+          fontSize: 20.sp,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -80,16 +81,22 @@ class AppTheme {
               color: textPrimaryDark,
               fontWeight: FontWeight.bold,
             ),
-            bodyLarge: GoogleFonts.inter(color: textPrimaryDark, fontSize: 16),
-            bodyMedium: GoogleFonts.inter(color: textPrimaryDark, fontSize: 14),
+            bodyLarge: GoogleFonts.inter(
+              color: textPrimaryDark,
+              fontSize: 16.sp,
+            ),
+            bodyMedium: GoogleFonts.inter(
+              color: textPrimaryDark,
+              fontSize: 14.sp,
+            ),
           ),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: darkTeal,
         elevation: 0,
-        iconTheme: IconThemeData(color: warmOffWhite),
+        iconTheme: const IconThemeData(color: warmOffWhite),
         titleTextStyle: TextStyle(
           color: warmOffWhite,
-          fontSize: 20,
+          fontSize: 20.sp,
           fontWeight: FontWeight.w600,
         ),
       ),

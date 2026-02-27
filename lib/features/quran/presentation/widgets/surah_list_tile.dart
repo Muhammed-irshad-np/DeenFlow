@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SurahListTile extends StatelessWidget {
   final int number;
@@ -27,7 +28,7 @@ class SurahListTile extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 16.h),
         child: Row(
           children: [
             Stack(
@@ -35,7 +36,7 @@ class SurahListTile extends StatelessWidget {
               children: [
                 Icon(
                   Icons.star_border, // Simple geometric star placeholder
-                  size: 40,
+                  size: 40.r,
                   color: Theme.of(context).primaryColor,
                 ),
                 Text(
@@ -47,7 +48,7 @@ class SurahListTile extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: 16.w),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,7 +59,7 @@ class SurahListTile extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Row(
                     children: [
                       Text(
@@ -67,16 +68,16 @@ class SurahListTile extends StatelessWidget {
                           color: Colors.grey.shade600,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8.w),
                       Container(
-                        width: 4,
-                        height: 4,
+                        width: 4.w,
+                        height: 4.w,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.grey.shade400,
                         ),
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: 8.w),
                       Text(
                         '$verses Verses',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(

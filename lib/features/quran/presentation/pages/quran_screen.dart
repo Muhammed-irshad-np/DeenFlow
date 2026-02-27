@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../widgets/surah_list_tile.dart';
 
 class QuranScreen extends StatelessWidget {
@@ -71,9 +72,9 @@ class QuranScreen extends StatelessWidget {
               child: ListView.separated(
                 itemCount: surahs.length,
                 separatorBuilder: (context, index) => Divider(
-                  indent: 24,
-                  endIndent: 24,
-                  height: 1,
+                  indent: 24.w,
+                  endIndent: 24.w,
+                  height: 1.h,
                   color: Colors.grey.shade200,
                 ),
                 itemBuilder: (context, index) {
@@ -96,18 +97,18 @@ class QuranScreen extends StatelessWidget {
 
   Widget _buildContinueReadingCard(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(24),
-      padding: const EdgeInsets.all(20),
+      margin: EdgeInsets.all(24.w),
+      padding: EdgeInsets.all(20.w),
       decoration: BoxDecoration(
         color: Theme.of(context).primaryColor,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         boxShadow: [
           BoxShadow(
             color: Theme.of(
               context,
             ).primaryColor.withAlpha((255 * 0.2).toInt()),
-            blurRadius: 16,
-            offset: const Offset(0, 8),
+            blurRadius: 16.r,
+            offset: Offset(0, 8.h),
           ),
         ],
       ),
@@ -119,8 +120,8 @@ class QuranScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Icon(Icons.menu_book, color: Colors.white, size: 20),
-                  const SizedBox(width: 8),
+                  Icon(Icons.menu_book, color: Colors.white, size: 20.r),
+                  SizedBox(width: 8.w),
                   Text(
                     'Continue Reading',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -130,7 +131,7 @@ class QuranScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              SizedBox(height: 12.h),
               Text(
                 'Al-Baqarah',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -138,7 +139,7 @@ class QuranScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4.h),
               Text(
                 'Verse 255 (Ayatul Kursi)',
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -148,15 +149,15 @@ class QuranScreen extends StatelessWidget {
             ],
           ),
           Container(
-            padding: const EdgeInsets.all(8),
+            padding: EdgeInsets.all(8.w),
             decoration: BoxDecoration(
               color: Colors.white.withAlpha((255 * 0.2).toInt()),
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.arrow_forward_ios,
               color: Colors.white,
-              size: 16,
+              size: 16.r,
             ),
           ),
         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class QuranReadingScreen extends StatelessWidget {
   final String surahName;
@@ -60,9 +61,9 @@ class QuranReadingScreen extends StatelessWidget {
           children: [
             Text(
               surahName,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 18.sp, fontWeight: FontWeight.bold),
             ),
-            Text(surahArabicName, style: const TextStyle(fontSize: 14)),
+            Text(surahArabicName, style: TextStyle(fontSize: 14.sp)),
           ],
         ),
         centerTitle: true,
@@ -75,9 +76,9 @@ class QuranReadingScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: ListView.separated(
-          padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
+          padding: EdgeInsets.symmetric(vertical: 24.h, horizontal: 16.w),
           itemCount: verses.length,
-          separatorBuilder: (context, index) => const Divider(height: 32),
+          separatorBuilder: (context, index) => Divider(height: 32.h),
           itemBuilder: (context, index) {
             final v = verses[index];
             return Column(
@@ -87,7 +88,7 @@ class QuranReadingScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(8),
+                      padding: EdgeInsets.all(8.w),
                       decoration: BoxDecoration(
                         color: Theme.of(
                           context,
@@ -106,8 +107,8 @@ class QuranReadingScreen extends StatelessWidget {
                       child: Text(
                         v['arabic'] as String,
                         textAlign: TextAlign.right,
-                        style: const TextStyle(
-                          fontSize: 28,
+                        style: TextStyle(
+                          fontSize: 28.sp,
                           fontFamily: 'Amiri',
                           height: 1.8,
                         ),
@@ -116,7 +117,7 @@ class QuranReadingScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16.h),
                 Text(
                   v['translation'] as String,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -124,7 +125,7 @@ class QuranReadingScreen extends StatelessWidget {
                     height: 1.5,
                   ),
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8.h),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
